@@ -1,0 +1,54 @@
+<ion-content>
+  <div class="pagina-interna">
+    <app-cabecera-interna [titulo]="titulo" volverA="/categorias" />
+
+    @if (cargandoDatos()) {
+    <div class="cargando"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else {
+    <div class="tarjeta">
+      <form (ngSubmit)="guardar()" novalidate>
+        <label class="etiqueta-campo">Nombre de la Categoría</label>
+        <div class="campo-form">
+          <ion-input
+            name="nombre"
+            [(ngModel)]="nombre"
+            placeholder="Ej. Granos y Abarrotes"
+            aria-label="Nombre de la categoría"
+            maxlength="80"
+            autocomplete="off"
+          ></ion-input>
+        </div>
+
+        <label class="etiqueta-campo">Descripción</label>
+        <div class="campo-form">
+          <ion-textarea
+            name="descripcion"
+            [(ngModel)]="descripcion"
+            rows="4"
+            placeholder="Breve descripción de los productos que incluye..."
+            aria-label="Descripción"
+            maxlength="255"
+          ></ion-textarea>
+        </div>
+
+        @if (mensajeError()) {
+        <p class="mensaje-error" role="alert">{{ mensajeError() }}</p>
+        }
+
+        <ion-button
+          expand="block"
+          type="submit"
+          class="boton-guardar"
+          [class.verde]="!editando"
+          [class.azul]="editando"
+          [disabled]="guardando()"
+        >
+          @if (guardando()) {
+          <ion-spinner name="crescent"></ion-spinner>
+          } @else { {{ textoBoton }} }
+        </ion-button>
+      </form>
+    </div>
+    }
+  </div>
+</ion-content>

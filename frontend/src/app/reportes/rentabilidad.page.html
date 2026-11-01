@@ -1,0 +1,104 @@
+<ion-content>
+  <div class="pagina-interna">
+    <app-cabecera-interna
+      class="no-imprimir"
+      titulo="Rentabilidad"
+      volverA="/reportes"
+    >
+      <span accion class="botones-reporte">
+        <button
+          type="button"
+          class="boton-reporte"
+          (click)="exportar()"
+          aria-label="Exportar a CSV"
+          [disabled]="!datos()?.productos?.length"
+        >
+          <ion-icon name="download"></ion-icon>
+        </button>
+        <button
+          type="button"
+          class="boton-reporte"
+          (click)="imprimir()"
+          aria-label="Imprimir"
+        >
+          <ion-icon name="print"></ion-icon>
+        </button>
+      </span>
+    </app-cabecera-interna>
+
+    <app-filtro-fechas
+      class="no-imprimir"
+      [cargando]="cargando()"
+      (buscar)="alBuscar($event)"
+    ></app-filtro-fechas>
+
+    @if (cargando()) {
+    <div class="cargando"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (error()) {
+    <p class="mensaje-error">{{ error() }}</p>
+    } @else if (datos(); as d) {
+
+    <!-- Ganancia del período -->
+    <div class="grande tarjeta">
+      <span class="etiqueta">Ganancia del {{ d.desde }} al {{ d.hasta }}</span>
+      <span class="monto" [class.negativo]="d.resumen.ganancia < 0">
+        {{ pesos(d.resumen.ganancia) }}
+      </span>
+      <span
+        class="chip-margen"
+        [class.negativo]="(d.resumen.margen_porcentaje ?? 0) < 0"
+      >
+        Margen {{ margen(d.resumen.margen_porcentaje) }}
+      </span>
+    </div>
+
+    <!-- Vendido, IVA y costo -->
+    <div class="resumen">
+      <div class="cifra azul">
+        <span class="numero">{{ pesos(d.resumen.ingresos) }}</span>
+        <span>Vendido</span>
+      </div>
+      <div class="cifra naranja">
+        <span class="numero">{{ pesos(d.resumen.iva) }}</span>
+        <span>IVA</span>
+      </div>
+      <div class="cifra rojo">
+        <span class="numero">{{ pesos(d.resumen.costo) }}</span>
+        <span>Costo</span>
+      </div>
+    </div>
+
+    <p class="nota">
+      El precio de venta ya incluye el IVA. La ganancia es lo vendido sin IVA
+      menos lo que costó la mercancía.
+    </p>
+
+    <!-- Detalle por producto -->
+    @if (d.productos.length === 0) {
+    <div class="vacio">
+      <ion-icon name="trending-up"></ion-icon>
+      <p>No hubo ventas en este período.</p>
+    </div>
+    } @else {
+    <section class="lista">
+      @for (p of d.productos; track p.id_producto) {
+      <article class="fila">
+        <div class="datos">
+          <strong>{{ p.nombre }}</strong>
+          <small>{{ p.unidades }} und. · Vendido {{ pesos(p.ingresos) }}</small>
+          <small>Costo {{ pesos(p.costo) }}</small>
+        </div>
+        <span
+          class="valor"
+          [class.entra]="p.ganancia > 0"
+          [class.sale]="p.ganancia < 0"
+        >
+          {{ pesos(p.ganancia) }}
+          <small>Margen {{ margen(p.margen_porcentaje) }}</small>
+        </span>
+      </article>
+      }
+    </section>
+    } }
+  </div>
+</ion-content>

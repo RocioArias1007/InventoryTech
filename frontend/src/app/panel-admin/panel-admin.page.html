@@ -1,0 +1,51 @@
+<ion-content>
+  <div class="pagina-panel">
+    <app-cabecera-panel />
+
+    <h1 class="saludo">Hola, {{ nombre }}</h1>
+
+    <!-- Resumen del día -->
+    <section class="resumen">
+      <div class="tarjeta dato">
+        <span class="etiqueta etiqueta-rojo">⚠️ Stock Bajo</span>
+        <strong class="valor">{{ textoStock() }}</strong>
+      </div>
+      <div class="tarjeta dato">
+        <span class="etiqueta etiqueta-verde">💰 Ventas Hoy</span>
+        <strong class="valor">{{ textoVentas() }}</strong>
+      </div>
+    </section>
+
+    @if (errorResumen()) {
+    <p class="aviso-error">
+      No se pudo cargar el resumen.
+      <button type="button" (click)="cargarResumen()">Reintentar</button>
+    </p>
+    }
+
+    <!-- Menú administrativo -->
+    <h2 class="titulo-seccion">Menú Administrativo</h2>
+    <section class="rejilla">
+      @for (opcion of opciones; track opcion.texto) {
+      <app-opcion-menu
+        [icono]="opcion.icono"
+        [texto]="opcion.texto"
+        [colorIcono]="opcion.colorIcono"
+        [colorTexto]="opcion.colorTexto"
+        (click)="abrir(opcion)"
+      />
+      }
+    </section>
+  </div>
+
+  <!-- Botón del chat -->
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button
+      class="boton-chat"
+      (click)="abrirChat()"
+      aria-label="Abrir el asistente Katia"
+    >
+      <ion-icon name="chatbubble"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

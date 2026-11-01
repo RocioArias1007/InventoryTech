@@ -1,0 +1,150 @@
+// Botón "+" dorado del encabezado.
+.mas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: 0;
+  color: var(--it-dorado);
+  cursor: pointer;
+
+  ion-icon { font-size: 32px; }
+}
+
+// Buscador y botón de filtro, uno al lado del otro.
+.barra-busqueda {
+  display: flex;
+  gap: 10px;
+  margin: 8px 0 16px;
+}
+
+.buscador {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 14px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+
+  ion-icon { flex-shrink: 0; font-size: 20px; color: var(--it-texto-suave); }
+
+  ion-input {
+    flex: 1;
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --background: transparent;
+    --color: var(--it-texto-oscuro);
+    --placeholder-color: var(--it-texto-suave);
+    --placeholder-opacity: 1;
+    min-height: 0;
+    font-size: 15px;
+  }
+}
+
+.filtro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: #ffffff;
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  color: #f87171;
+  cursor: pointer;
+
+  ion-icon { font-size: 24px; }
+
+  // Cuando hay un filtro puesto, el botón se pinta de azul.
+  &.activo { background: var(--it-azul); color: #ffffff; }
+}
+
+.lista { display: flex; flex-direction: column; gap: 12px; }
+
+.producto { padding: 14px 14px 6px; }
+
+.fila { display: flex; align-items: center; gap: 12px; }
+
+// Caja del icono (o de la foto).
+.icono-caja {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  border-radius: 12px;
+
+  ion-icon { font-size: 24px; }
+  img { width: 100%; height: 100%; object-fit: cover; }
+
+  &.tono-verde { background: #e7f8f1; color: var(--it-verde); }
+  &.tono-rojo { background: #fee2e2; color: var(--it-rojo); }
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+
+  h3 { margin: 0 0 2px; font-size: 16px; font-weight: 700; color: var(--it-texto-oscuro); }
+
+  p {
+    margin: 0;
+    font-size: 12.5px;
+    color: var(--it-texto-suave);
+    &.rojo { color: var(--it-rojo); font-weight: 600; }
+  }
+}
+
+// Precio y estado, a la derecha.
+.derecha {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+
+  .precio { font-size: 15px; font-weight: 700; color: var(--it-texto-oscuro); }
+  .estado {
+    font-size: 11px;
+    font-weight: 700;
+    &.verde { color: var(--it-verde); }
+    &.rojo { color: var(--it-rojo); }
+  }
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.accion {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 40px;
+  padding: 0 8px;
+  background: none;
+  border: 0;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+
+  ion-icon { font-size: 16px; }
+  &.azul { color: var(--it-azul); }
+  &.verde { color: var(--it-verde); }
+  &.roja { color: var(--it-rojo); }
+}

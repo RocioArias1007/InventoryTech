@@ -1,0 +1,35 @@
+<ion-content>
+  <div class="pagina-interna">
+    <app-cabecera-interna
+      titulo="Centro de Reportes"
+      volverA="/admin"
+    ></app-cabecera-interna>
+
+    <p class="indicacion">
+      Selecciona el reporte que deseas consultar o exportar:
+    </p>
+
+    <section class="lista">
+      @for (r of reportes; track r.titulo) {
+      <button type="button" class="reporte" (click)="abrir(r)">
+        <span
+          class="icono"
+          [style.background]="r.fondo"
+          [style.color]="r.color"
+        >
+          <ion-icon [name]="r.icono"></ion-icon>
+        </span>
+        <span class="textos">
+          <strong>{{ r.titulo }}</strong>
+          <small>{{ r.descripcion }}</small>
+        </span>
+        <ion-icon
+          name="arrow-forward"
+          class="flecha"
+          [style.color]="r.color"
+        ></ion-icon>
+      </button>
+      }
+    </section>
+  </div>
+</ion-content>

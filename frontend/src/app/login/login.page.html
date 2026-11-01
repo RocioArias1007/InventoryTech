@@ -1,0 +1,66 @@
+<ion-content>
+  <div class="pagina">
+    <img
+      class="logo"
+      src="assets/logo.png"
+      alt="InventoryTech, soluciones inteligentes"
+    />
+
+    <div class="tarjeta">
+      <h1>Bienvenido</h1>
+      <p class="subtitulo">Ingresa a tu cuenta para continuar</p>
+
+      <form (ngSubmit)="ingresar()" novalidate>
+        <!-- Campo de usuario -->
+        <div class="campo">
+          <ion-icon name="person" class="icono-usuario"></ion-icon>
+          <ion-input
+            name="usuario"
+            [(ngModel)]="usuario"
+            placeholder="Usuario"
+            aria-label="Usuario"
+            autocomplete="username"
+            autocapitalize="off"
+          ></ion-input>
+        </div>
+
+        <!-- Campo de contraseña, con el ojito para verla -->
+        <div class="campo">
+          <ion-icon name="lock-closed" class="icono-clave"></ion-icon>
+          <ion-input
+            name="contrasena"
+            [(ngModel)]="contrasena"
+            [type]="mostrarClave() ? 'text' : 'password'"
+            placeholder="Contraseña"
+            aria-label="Contraseña"
+            autocomplete="current-password"
+          ></ion-input>
+          <button
+            type="button"
+            class="ojo"
+            (click)="alternarClave()"
+            [attr.aria-label]="mostrarClave() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+          >
+            <ion-icon [name]="mostrarClave() ? 'eye-off' : 'eye'"></ion-icon>
+          </button>
+        </div>
+
+        <!-- Mensaje de error (solo aparece si hay uno) -->
+        @if (mensajeError()) {
+        <p class="error" role="alert">{{ mensajeError() }}</p>
+        }
+
+        <ion-button
+          expand="block"
+          type="submit"
+          class="boton-ingresar"
+          [disabled]="cargando()"
+        >
+          @if (cargando()) {
+          <ion-spinner name="crescent"></ion-spinner>
+          } @else { Iniciar sesión }
+        </ion-button>
+      </form>
+    </div>
+  </div>
+</ion-content>

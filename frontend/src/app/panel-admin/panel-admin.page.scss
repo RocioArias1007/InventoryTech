@@ -1,0 +1,56 @@
+// Las dos tarjetas de resumen, lado a lado.
+.resumen {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.dato {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 14px 14px 16px;
+}
+
+.etiqueta {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.etiqueta-rojo {
+  color: var(--it-rojo);
+}
+
+.etiqueta-verde {
+  color: var(--it-verde);
+}
+
+.valor {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--it-texto-oscuro);
+}
+
+.formulario {
+  padding: 0 16px;
+}
+
+// Mensaje si no se pudo cargar el resumen.
+.aviso-error {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--it-naranja);
+
+  button {
+    padding: 0;
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,72 @@
+<ion-header class="ion-no-border">
+  <div class="cabecera-chat">
+    <app-cabecera-interna titulo="Katia" [volverA]="rutaInicio">
+      <button
+        accion
+        type="button"
+        class="limpiar"
+        aria-label="Limpiar chat"
+        [disabled]="mensajes().length <= 1 || esperando()"
+        (click)="borrarConversacion()"
+      >
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </app-cabecera-interna>
+  </div>
+</ion-header>
+
+<ion-content class="pagina-chat">
+  <div class="mensajes">
+    @for (m of mensajes(); track $index) {
+    <div class="fila" [class.mio]="m.de === 'usuario'">
+      @if (m.de !== 'usuario') {
+      <span class="avatar" aria-hidden="true">K</span>
+      }
+      <div
+        class="burbuja"
+        [class.mia]="m.de === 'usuario'"
+        [class.error]="m.error"
+      >
+        {{ m.texto }}
+      </div>
+    </div>
+    } @if (esperando()) {
+    <div class="fila">
+      <span class="avatar" aria-hidden="true">K</span>
+      <div class="burbuja escribiendo" aria-label="Katia está escribiendo">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    } @if (mensajes().length === 1 && !esperando()) {
+    <div class="sugerencias">
+      <p class="sugerencias-titulo">Prueba preguntando:</p>
+      @for (s of sugerencias; track s) {
+      <button type="button" (click)="enviar(s)">{{ s }}</button>
+      }
+    </div>
+    }
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border barra">
+  <div class="entrada">
+    <ion-input
+      class="campo-chat"
+      placeholder="Escribe tu pregunta..."
+      aria-label="Escribe tu pregunta"
+      maxlength="500"
+      [value]="escrito()"
+      (ionInput)="escrito.set($any($event).detail.value ?? '')"
+      (keyup.enter)="enviar()"
+    ></ion-input>
+    <button
+      type="button"
+      class="enviar"
+      [disabled]="esperando() || !escrito().trim()"
+      (click)="enviar()"
+      aria-label="Enviar"
+    >
+      <ion-icon name="send"></ion-icon>
+    </button>
+  </div>
+</ion-footer>

@@ -1,0 +1,71 @@
+<ion-content>
+  <div class="pagina-interna">
+    <app-cabecera-interna
+      class="no-imprimir"
+      titulo="Alertas de Stock Bajo"
+      volverA="/reportes"
+    >
+      <span accion class="botones-reporte">
+        <button
+          type="button"
+          class="boton-reporte"
+          (click)="exportar()"
+          aria-label="Exportar a CSV"
+          [disabled]="!datos()?.total"
+        >
+          <ion-icon name="download"></ion-icon>
+        </button>
+        <button
+          type="button"
+          class="boton-reporte"
+          (click)="imprimir()"
+          aria-label="Imprimir"
+        >
+          <ion-icon name="print"></ion-icon>
+        </button>
+      </span>
+    </app-cabecera-interna>
+
+    @if (cargando()) {
+    <div class="cargando"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (error()) {
+    <div class="aviso-error">
+      {{ error() }}
+      <ion-button size="small" (click)="cargar()">Reintentar</ion-button>
+    </div>
+    } @else if (datos(); as d) {
+
+    <div class="resumen">
+      <div class="cifra roja">
+        <span class="numero">{{ d.agotados }}</span>
+        <span>Agotados</span>
+      </div>
+      <div class="cifra naranja">
+        <span class="numero">{{ d.bajos }}</span>
+        <span>Stock bajo</span>
+      </div>
+    </div>
+
+    @if (d.total === 0) {
+    <div class="vacio">
+      <ion-icon name="checkmark-circle"></ion-icon>
+      <p>Todo en orden. Ningún producto está por agotarse.</p>
+    </div>
+    } @else {
+    <section class="lista">
+      @for (p of d.productos; track p.id_producto) {
+      <article class="item" [class.agotado]="p.estado === 'agotado'">
+        <div class="datos">
+          <strong>{{ p.nombre }}</strong>
+          <small>{{ p.categoria }}</small>
+          <small>Quedan {{ p.cantidad }} · Mínimo {{ p.stock_minimo }}</small>
+        </div>
+        <span class="etiqueta">
+          {{ p.estado === 'agotado' ? 'Agotado' : 'Stock bajo' }}
+        </span>
+      </article>
+      }
+    </section>
+    } }
+  </div>
+</ion-content>

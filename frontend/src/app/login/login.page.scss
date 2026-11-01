@@ -1,0 +1,113 @@
+// Toda la pantalla: logo arriba y tarjeta debajo, como en el mockup.
+.pagina {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 20px 24px;
+}
+
+.logo {
+  width: 130px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.tarjeta {
+  width: 100%;
+  max-width: 400px;
+  padding: 24px 20px 22px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--it-texto-oscuro);
+}
+
+.subtitulo {
+  margin: 4px 0 22px;
+  font-size: 13px;
+  color: var(--it-texto-suave);
+}
+
+// Caja del campo: borde gris, esquinas redondeadas, icono a la izquierda.
+.campo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 14px;
+  margin-bottom: 14px;
+  background: #ffffff;
+  border: 2px solid var(--it-borde);
+  border-radius: var(--it-radio-campo);
+  transition: border-color 0.15s;
+
+  // Cuando la persona escribe, el borde se pone azul.
+  &:focus-within {
+    border-color: var(--it-azul);
+  }
+
+  ion-input {
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --background: transparent;
+    --color: var(--it-texto-oscuro);
+    --placeholder-color: var(--it-texto-suave);
+    --placeholder-opacity: 1;
+    min-height: 0;
+    font-size: 16px;
+  }
+}
+
+.icono-usuario {
+  flex-shrink: 0;
+  font-size: 22px;
+  color: var(--it-texto-suave);
+}
+
+.icono-clave {
+  flex-shrink: 0;
+  font-size: 22px;
+  color: var(--it-texto-oscuro);
+}
+
+// Botón del ojito.
+.ojo {
+  display: flex;
+  padding: 4px;
+  background: none;
+  border: 0;
+  color: var(--it-texto-oscuro);
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 22px;
+  }
+}
+
+.error {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--it-rojo);
+}
+
+// Botón menta con texto oscuro, como en el mockup.
+.boton-ingresar {
+  margin: 8px 0 0;
+  height: 48px;
+  --background: var(--it-menta);
+  --background-activated: var(--ion-color-tertiary-shade);
+  --background-hover: var(--ion-color-tertiary-tint);
+  --color: var(--it-texto-oscuro);
+  --border-radius: var(--it-radio-boton);
+  --box-shadow: none;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+}

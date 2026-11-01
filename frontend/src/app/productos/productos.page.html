@@ -1,0 +1,106 @@
+<ion-content>
+  <div class="pagina-interna">
+    <app-cabecera-interna titulo="Gestión de Productos" volverA="/admin">
+      <button
+        accion
+        type="button"
+        class="mas"
+        (click)="nuevo()"
+        aria-label="Nuevo producto"
+      >
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </button>
+    </app-cabecera-interna>
+
+    <!-- Buscador y botón de filtro -->
+    <div class="barra-busqueda">
+      <div class="buscador">
+        <ion-icon name="search"></ion-icon>
+        <ion-input
+          type="text"
+          placeholder="Buscar producto..."
+          aria-label="Buscar producto"
+          autocomplete="off"
+          (ionInput)="alBuscar($event)"
+        ></ion-input>
+      </div>
+      <button
+        type="button"
+        class="filtro"
+        [class.activo]="estado !== ''"
+        (click)="elegirEstado()"
+        aria-label="Filtrar por estado"
+      >
+        <ion-icon name="filter"></ion-icon>
+      </button>
+    </div>
+
+    <!-- Lista -->
+    @if (cargando()) {
+    <div class="cargando"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (errorCarga()) {
+    <p class="aviso-error">
+      {{ errorCarga() }}
+      <button type="button" (click)="cargar()">Reintentar</button>
+    </p>
+    } @else if (lista().length === 0) {
+    <p class="vacio">
+      @if (buscar.trim() || estado) { No se encontraron productos con ese
+      filtro. } @else { Todavía no hay productos. Toca el botón + para crear el
+      primero. }
+    </p>
+    } @else {
+    <section class="lista">
+      @for (p of lista(); track p.id_producto) {
+      <article class="tarjeta producto">
+        <div class="fila">
+          <!-- Si tiene foto se muestra la foto; si no, el icono. -->
+          <div
+            class="icono-caja"
+            [class.tono-verde]="p.estado === 'disponible'"
+            [class.tono-rojo]="p.estado !== 'disponible'"
+          >
+            @if (fotos()[p.id_producto]; as foto) {
+            <img [src]="foto" alt="Foto de {{ p.nombre }}" />
+            } @else {
+            <ion-icon name="clipboard"></ion-icon>
+            }
+          </div>
+
+          <div class="info">
+            <h3>{{ p.nombre }}</h3>
+            <p [class.rojo]="p.estado !== 'disponible'">
+              Stock: {{ p.cantidad }} {{ p.cantidad === 1 ? 'unidad' :
+              'unidades' }}
+            </p>
+          </div>
+
+          <div class="derecha">
+            <span class="precio">{{ formatear(p.precio_venta) }}</span>
+            <span
+              class="estado"
+              [class.verde]="p.estado === 'disponible'"
+              [class.rojo]="p.estado !== 'disponible'"
+            >
+              {{ etiquetas[p.estado] }}
+            </span>
+          </div>
+        </div>
+
+        <div class="acciones">
+          <button type="button" class="accion azul" (click)="editar(p)">
+            <ion-icon name="create"></ion-icon> Actualizar
+          </button>
+          <button type="button" class="accion verde" (click)="ingreso(p)">
+            <ion-icon name="download"></ion-icon> Ingreso
+          </button>
+          <button type="button" class="accion roja" (click)="eliminar(p)">
+            <ion-icon name="trash"></ion-icon> Eliminar
+          </button>
+        </div>
+      </article>
+      }
+    </section>
+    }
+  </div>
+</ion-content>

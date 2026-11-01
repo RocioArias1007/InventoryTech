@@ -1,0 +1,193 @@
+<ion-content>
+  <div class="pagina-interna">
+    <app-cabecera-interna [titulo]="titulo" volverA="/productos" />
+
+    @if (cargandoDatos()) {
+    <div class="cargando"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else {
+    <div class="tarjeta">
+      <form (ngSubmit)="guardar()" novalidate>
+        <label class="etiqueta-campo">Nombre del Producto</label>
+        <div class="campo-form">
+          <ion-input
+            name="nombre"
+            [(ngModel)]="nombre"
+            placeholder="Ej. Arroz Diana 1000g"
+            aria-label="Nombre del producto"
+            maxlength="120"
+            autocomplete="off"
+          ></ion-input>
+        </div>
+
+        <label class="etiqueta-campo">Categoría</label>
+        <div class="campo-form">
+          <ion-select
+            name="categoria"
+            [(ngModel)]="idCategoria"
+            interface="popover"
+            placeholder="Elige una categoría"
+            aria-label="Categoría"
+          >
+            @for (c of categorias(); track c.id_categoria) {
+            <ion-select-option [value]="c.id_categoria"
+              >{{ c.nombre }}</ion-select-option
+            >
+            }
+          </ion-select>
+        </div>
+        @if (categorias().length === 0) {
+        <p class="mensaje-error">
+          Primero crea una categoría para poder guardar productos.
+        </p>
+        }
+
+        <div class="dos-columnas">
+          <div>
+            <label class="etiqueta-campo"
+              >{{ editando ? 'Cantidad Actual' : 'Cantidad Inicial' }}</label
+            >
+            @if (editando) {
+            <div class="campo-form bloqueado">
+              <ion-input
+                [value]="cantidadActual"
+                [disabled]="true"
+                aria-label="Cantidad actual"
+              ></ion-input>
+            </div>
+            } @else {
+            <div class="campo-form">
+              <ion-input
+                name="cantidad"
+                [(ngModel)]="cantidad"
+                type="number"
+                inputmode="numeric"
+                placeholder="Ej. 50"
+                aria-label="Cantidad inicial"
+              ></ion-input>
+            </div>
+            }
+          </div>
+          <div>
+            <label class="etiqueta-campo">Stock Mínimo</label>
+            <div class="campo-form">
+              <ion-input
+                name="stockMinimo"
+                [(ngModel)]="stockMinimo"
+                type="number"
+                inputmode="numeric"
+                placeholder="Ej. 5"
+                aria-label="Stock mínimo"
+              ></ion-input>
+            </div>
+          </div>
+        </div>
+        @if (editando) {
+        <p class="ayuda">
+          Para sumar mercancía usa el botón Ingreso de la lista.
+        </p>
+        }
+
+        <div class="dos-columnas">
+          <div>
+            <label class="etiqueta-campo">Precio Compra</label>
+            <div class="campo-form">
+              <ion-input
+                name="precioCompra"
+                [(ngModel)]="precioCompra"
+                type="number"
+                inputmode="decimal"
+                placeholder="$ 0.00"
+                aria-label="Precio de compra"
+              ></ion-input>
+            </div>
+          </div>
+          <div>
+            <label class="etiqueta-campo">Precio Venta</label>
+            <div class="campo-form">
+              <ion-input
+                name="precioVenta"
+                [(ngModel)]="precioVenta"
+                type="number"
+                inputmode="decimal"
+                placeholder="$ 0.00"
+                aria-label="Precio de venta"
+              ></ion-input>
+            </div>
+          </div>
+        </div>
+
+        <label class="etiqueta-campo">Porcentaje de IVA (%)</label>
+        <div class="campo-form">
+          <ion-input
+            name="iva"
+            [(ngModel)]="iva"
+            type="number"
+            inputmode="decimal"
+            placeholder="Ej. 19 o 0"
+            aria-label="Porcentaje de IVA"
+          ></ion-input>
+        </div>
+
+        <label class="etiqueta-campo">Descripción</label>
+        <div class="campo-form">
+          <ion-textarea
+            name="descripcion"
+            [(ngModel)]="descripcion"
+            rows="3"
+            placeholder="Detalles adicionales del producto..."
+            aria-label="Descripción"
+            maxlength="255"
+          ></ion-textarea>
+        </div>
+
+        <!-- Foto: opcional -->
+        <label class="etiqueta-campo">Foto del Producto (opcional)</label>
+        <div class="bloque-foto">
+          <div class="vista-foto">
+            @if (vistaFoto(); as foto) {
+            <img [src]="foto" alt="Foto del producto" />
+            } @else {
+            <ion-icon name="image-outline"></ion-icon>
+            }
+          </div>
+          <div class="botones-foto">
+            <button type="button" class="boton-foto" (click)="archivo.click()">
+              <ion-icon name="camera"></ion-icon>
+              {{ vistaFoto() ? 'Cambiar foto' : 'Elegir foto' }}
+            </button>
+            @if (vistaFoto()) {
+            <button type="button" class="boton-foto roja" (click)="quitar()">
+              <ion-icon name="trash"></ion-icon> Quitar foto
+            </button>
+            }
+          </div>
+          <input
+            #archivo
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            hidden
+            (change)="alElegirFoto($event)"
+          />
+        </div>
+
+        @if (mensajeError()) {
+        <p class="mensaje-error" role="alert">{{ mensajeError() }}</p>
+        }
+
+        <ion-button
+          expand="block"
+          type="submit"
+          class="boton-guardar"
+          [class.verde]="!editando"
+          [class.azul]="editando"
+          [disabled]="guardando()"
+        >
+          @if (guardando()) {
+          <ion-spinner name="crescent"></ion-spinner>
+          } @else { {{ textoBoton }} }
+        </ion-button>
+      </form>
+    </div>
+    }
+  </div>
+</ion-content>

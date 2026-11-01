@@ -1,0 +1,79 @@
+<ion-content>
+  <div class="pagina-interna">
+    <app-cabecera-interna titulo="Gestión de Categorías" volverA="/admin">
+      <button
+        accion
+        type="button"
+        class="mas"
+        (click)="nueva()"
+        aria-label="Nueva categoría"
+      >
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </button>
+    </app-cabecera-interna>
+
+    <!-- Buscador -->
+    <div class="buscador">
+      <ion-icon name="search"></ion-icon>
+      <ion-input
+        type="text"
+        placeholder="Buscar categoría..."
+        aria-label="Buscar categoría"
+        autocomplete="off"
+        (ionInput)="alBuscar($event)"
+      ></ion-input>
+    </div>
+
+    <!-- Lista -->
+    @if (cargando()) {
+    <div class="cargando"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (errorCarga()) {
+    <p class="aviso-error">
+      {{ errorCarga() }}
+      <button type="button" (click)="cargar()">Reintentar</button>
+    </p>
+    } @else if (lista().length === 0) {
+    <p class="vacio">
+      @if (buscar.trim()) { No se encontraron categorías con esa búsqueda. }
+      @else { Todavía no hay categorías. Toca el botón + para crear la primera.
+      }
+    </p>
+    } @else {
+    <section class="lista">
+      @for (c of lista(); track c.id_categoria) {
+      <article class="tarjeta categoria">
+        <div class="fila">
+          <div
+            class="icono-caja"
+            [class.tono-verde]="$index % 2 === 0"
+            [class.tono-azul]="$index % 2 === 1"
+          >
+            <ion-icon name="clipboard"></ion-icon>
+          </div>
+          <div class="info">
+            <h3>{{ c.nombre }}</h3>
+            <p>{{ c.descripcion || 'Sin descripción' }}</p>
+          </div>
+          <span
+            class="etiqueta-prod"
+            [class.tono-verde]="$index % 2 === 0"
+            [class.tono-azul]="$index % 2 === 1"
+          >
+            {{ c.total_productos }} Prod.
+          </span>
+        </div>
+
+        <div class="acciones">
+          <button type="button" class="accion azul" (click)="editar(c)">
+            <ion-icon name="create"></ion-icon> Actualizar
+          </button>
+          <button type="button" class="accion roja" (click)="eliminar(c)">
+            <ion-icon name="trash"></ion-icon> Eliminar
+          </button>
+        </div>
+      </article>
+      }
+    </section>
+    }
+  </div>
+</ion-content>

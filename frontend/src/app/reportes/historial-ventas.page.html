@@ -1,0 +1,77 @@
+<ion-content>
+  <div class="pagina-interna">
+    <app-cabecera-interna
+      class="no-imprimir"
+      titulo="Historial de Ventas"
+      volverA="/reportes"
+    >
+      <span accion class="botones-reporte">
+        <button
+          type="button"
+          class="boton-reporte"
+          (click)="exportar()"
+          aria-label="Exportar a CSV"
+          [disabled]="!datos()?.total_ventas"
+        >
+          <ion-icon name="download"></ion-icon>
+        </button>
+        <button
+          type="button"
+          class="boton-reporte"
+          (click)="imprimir()"
+          aria-label="Imprimir"
+        >
+          <ion-icon name="print"></ion-icon>
+        </button>
+      </span>
+    </app-cabecera-interna>
+
+    <app-filtro-fechas
+      class="no-imprimir"
+      [cargando]="cargando()"
+      (buscar)="alBuscar($event)"
+    ></app-filtro-fechas>
+
+    @if (cargando()) {
+    <div class="cargando"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (error()) {
+    <p class="mensaje-error">{{ error() }}</p>
+    } @else if (datos(); as d) {
+
+    <!-- Total vendido del período -->
+    <div class="grande tarjeta">
+      <span class="etiqueta"
+        >Total vendido del {{ d.desde }} al {{ d.hasta }}</span
+      >
+      <span class="monto">{{ pesos(d.total_ingresos) }}</span>
+      <span class="chip-margen">
+        {{ d.total_ventas }} {{ d.total_ventas === 1 ? 'venta' : 'ventas' }}
+      </span>
+    </div>
+
+    @if (d.total_ventas === 0) {
+    <div class="vacio">
+      <ion-icon name="receipt-outline"></ion-icon>
+      <p>No hay ventas en este período.</p>
+    </div>
+    } @else {
+    <section class="lista">
+      @for (v of d.ventas; track v.id_venta) {
+      <article class="fila">
+        <div class="datos">
+          <strong>Venta #{{ v.id_venta }}</strong>
+          <small>{{ fechaHora(v.fecha_venta) }}</small>
+          <small>{{ v.vendedor }} · {{ v.unidades }} und.</small>
+        </div>
+        <span class="valor">{{ pesos(v.total) }}</span>
+      </article>
+      }
+    </section>
+
+    @if (d.hay_mas) {
+    <p class="nota">
+      Se muestran las {{ d.mostrando }} más recientes. El total incluye todas.
+    </p>
+    } } }
+  </div>
+</ion-content>

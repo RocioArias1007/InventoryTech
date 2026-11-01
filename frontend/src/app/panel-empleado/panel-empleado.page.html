@@ -1,0 +1,33 @@
+<ion-content>
+  <div class="pagina-panel">
+    <app-cabecera-panel />
+
+    <h1 class="saludo">Hola, {{ nombre }}</h1>
+    <p class="subtitulo-panel">Selecciona una opción para operar</p>
+
+    <!-- Panel de operaciones -->
+    <h2 class="titulo-seccion">Panel de Operaciones</h2>
+    <section class="rejilla">
+      @for (opcion of opciones; track opcion.texto) {
+      <app-opcion-menu
+        [icono]="opcion.icono"
+        [texto]="opcion.texto"
+        [colorIcono]="opcion.colorIcono"
+        [colorTexto]="opcion.colorTexto"
+        (click)="abrir(opcion)"
+      />
+      }
+    </section>
+  </div>
+
+  <!-- Botón del chat -->
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button
+      class="boton-chat"
+      (click)="abrirChat()"
+      aria-label="Abrir el asistente Katia"
+    >
+      <ion-icon name="chatbubble"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

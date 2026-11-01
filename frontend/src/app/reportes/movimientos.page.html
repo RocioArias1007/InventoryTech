@@ -1,0 +1,103 @@
+<ion-content>
+  <div class="pagina-interna">
+    <app-cabecera-interna
+      class="no-imprimir"
+      titulo="Movimientos de Inventario"
+      volverA="/reportes"
+    >
+      <span accion class="botones-reporte">
+        <button
+          type="button"
+          class="boton-reporte"
+          (click)="exportar()"
+          aria-label="Exportar a CSV"
+          [disabled]="!datos()?.total_movimientos"
+        >
+          <ion-icon name="download"></ion-icon>
+        </button>
+        <button
+          type="button"
+          class="boton-reporte"
+          (click)="imprimir()"
+          aria-label="Imprimir"
+        >
+          <ion-icon name="print"></ion-icon>
+        </button>
+      </span>
+    </app-cabecera-interna>
+
+    <app-filtro-fechas
+      class="no-imprimir"
+      [cargando]="cargando()"
+      (buscar)="alBuscar($event)"
+    ></app-filtro-fechas>
+
+    <!-- Filtro por tipo de movimiento -->
+    <div class="chips no-imprimir">
+      @for (t of tipos; track t.valor) {
+      <button
+        type="button"
+        [class.activo]="tipo() === t.valor"
+        (click)="elegirTipo(t.valor)"
+      >
+        {{ t.texto }}
+      </button>
+      }
+    </div>
+
+    @if (cargando()) {
+    <div class="cargando"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (error()) {
+    <p class="mensaje-error">{{ error() }}</p>
+    } @else if (datos(); as d) {
+
+    <!-- Unidades que entraron y salieron -->
+    <div class="resumen dos">
+      <div class="cifra verde">
+        <span class="numero">{{ d.unidades_ingreso }}</span>
+        <span>Unidades que entraron</span>
+      </div>
+      <div class="cifra rojo">
+        <span class="numero">{{ d.unidades_venta }}</span>
+        <span>Unidades vendidas</span>
+      </div>
+    </div>
+
+    <p class="periodo">
+      Del {{ d.desde }} al {{ d.hasta }} · {{ d.total_movimientos }} movimientos
+    </p>
+
+    @if (d.total_movimientos === 0) {
+    <div class="vacio">
+      <ion-icon name="swap-vertical"></ion-icon>
+      <p>No hay movimientos en este período.</p>
+    </div>
+    } @else {
+    <section class="lista">
+      @for (m of d.movimientos; track m.id_movimiento) {
+      <article class="fila">
+        <div class="datos">
+          <strong>{{ m.producto }}</strong>
+          <small>{{ nombreTipo(m.tipo) }} · {{ m.usuario }}</small>
+          <small>{{ fechaHora(m.fecha) }}</small>
+        </div>
+        <span
+          class="valor"
+          [class.entra]="cambio(m) > 0"
+          [class.sale]="cambio(m) < 0"
+        >
+          {{ cambio(m) > 0 ? '+' : '' }}{{ cambio(m) }}
+          <small>{{ m.stock_anterior }} a {{ m.stock_nuevo }}</small>
+        </span>
+      </article>
+      }
+    </section>
+
+    @if (d.hay_mas) {
+    <p class="nota">
+      Se muestran los {{ d.mostrando }} más recientes. Los totales incluyen
+      todos.
+    </p>
+    } } }
+  </div>
+</ion-content>

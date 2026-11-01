@@ -1,0 +1,196 @@
+// ============================================================
+// Estilos de las pantallas de reportes
+// (Rentabilidad, Movimientos de Inventario, Historial de Ventas)
+// ============================================================
+
+// Botones de exportar e imprimir, en el encabezado.
+.botones-reporte {
+  display: flex;
+  gap: 8px;
+}
+
+.boton-reporte {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 0;
+  border-radius: 12px;
+  color: var(--it-turquesa);
+  cursor: pointer;
+
+  ion-icon { font-size: 24px; }
+
+  &:active { background: rgba(255, 255, 255, 0.2); }
+  &:disabled { opacity: 0.35; cursor: default; }
+}
+
+// Filtro por tipo: etiquetas redondeadas, sin borde ni barra de desplazamiento.
+.chips {
+  display: flex;
+  gap: 10px;
+  margin: 18px 0 16px;   // más espacio arriba (debajo de Consultar) y abajo
+  padding: 2px 0 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar { display: none; }   // oculta la barra gris (Chrome, Edge, Safari)
+
+  button {
+    flex: 0 0 auto;
+    min-height: 40px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+
+    &.activo { background: var(--it-azul); color: #ffffff; }
+
+    // Solo se ve el contorno si se navega con teclado.
+    &:focus-visible { outline: 2px solid var(--it-turquesa); outline-offset: 2px; }
+  }
+}
+
+// Bloques de colores con cifras. Por defecto son tres (Rentabilidad).
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+
+  // Movimientos usa solo dos, con el contenido centrado y números grandes.
+  &.dos {
+    grid-template-columns: 1fr 1fr;
+
+    .cifra {
+      align-items: center;
+      justify-content: center;
+      min-height: 96px;
+      padding: 16px 8px;
+      text-align: center;
+
+      .numero { font-size: 28px; line-height: 1.1; }
+    }
+  }
+}
+
+.cifra {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 12px 4px;
+  border-radius: 14px;
+  color: #ffffff;
+  font-size: 12px;
+  text-align: center;
+
+  .numero { font-size: 15px; font-weight: 700; overflow-wrap: anywhere; }
+
+  &.verde { background: var(--it-verde); }
+  &.azul { background: var(--it-azul); }
+  &.rojo { background: var(--it-rojo); }
+  &.naranja { background: var(--it-naranja); }
+  &.turquesa { background: var(--it-turquesa); }
+}
+
+// Texto del período, sin caja.
+.periodo {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  text-align: center;
+  color: #cbd5e1;
+}
+
+// Explicaciones, en una cajita con franja a la izquierda.
+.nota {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 3px solid var(--it-turquesa);
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #cbd5e1;
+}
+
+.vacio ion-icon { display: block; margin: 0 auto 8px; font-size: 36px; }
+
+// Tarjeta grande con el total o la ganancia.
+.grande {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 14px 0;
+  padding: 20px 16px;
+  color: var(--it-texto-oscuro);
+  text-align: center;
+
+  .etiqueta { font-size: 13px; color: var(--it-texto-suave); }
+  .monto { font-size: 34px; font-weight: 800; color: var(--it-verde); line-height: 1.2; }
+  .monto.negativo { color: var(--it-rojo); }
+
+  // Etiqueta redondeada (margen o número de ventas): verde, o roja si es negativa.
+  .chip-margen {
+    margin-top: 6px;
+    padding: 4px 12px;
+    background: #e7f8f1;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--it-verde);
+
+    &.negativo { background: #fee2e2; color: var(--it-rojo); }
+  }
+}
+
+// Lista de filas (productos, movimientos o ventas).
+.lista { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+
+.fila {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--it-tarjeta);
+  border-radius: 14px;
+  color: var(--it-texto-oscuro);
+
+  .datos {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+
+    strong { font-size: 15px; }
+  }
+
+  small { font-size: 12px; color: var(--it-texto-suave); }
+
+  .valor {
+    flex-shrink: 0;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: right;
+
+    small { display: block; font-weight: 400; }
+  }
+
+  .entra { color: var(--it-verde); }
+  .sale { color: var(--it-rojo); }
+}

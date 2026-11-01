@@ -1,0 +1,130 @@
+<ion-content>
+  <div class="pagina-interna">
+    <app-cabecera-interna
+      [titulo]="id() === null ? 'Registrar Nuevo Usuario' : 'Actualizar Usuario'"
+      volverA="/usuarios"
+    />
+
+    @if (cargando()) {
+    <div class="cargando"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else {
+    <div class="tarjeta">
+      <div class="dos-columnas">
+        <div>
+          <label class="etiqueta-campo">Nombre</label>
+          <div class="campo-form">
+            <ion-input
+              placeholder="Ej. Carlos"
+              aria-label="Nombre"
+              maxlength="60"
+              [value]="nombre()"
+              (ionInput)="nombre.set($any($event).detail.value ?? '')"
+            ></ion-input>
+          </div>
+        </div>
+        <div>
+          <label class="etiqueta-campo">Apellidos</label>
+          <div class="campo-form">
+            <ion-input
+              placeholder="Ej. Martínez"
+              aria-label="Apellidos"
+              maxlength="80"
+              [value]="apellidos()"
+              (ionInput)="apellidos.set($any($event).detail.value ?? '')"
+            ></ion-input>
+          </div>
+        </div>
+      </div>
+
+      <label class="etiqueta-campo">Nombre de Usuario (Login)</label>
+      <div class="campo-form">
+        <ion-input
+          placeholder="Ej. cmartinez"
+          aria-label="Nombre de usuario"
+          maxlength="40"
+          autocapitalize="off"
+          [value]="usuario()"
+          (ionInput)="usuario.set($any($event).detail.value ?? '')"
+        ></ion-input>
+      </div>
+
+      <label class="etiqueta-campo">Correo Electrónico</label>
+      <div class="campo-form">
+        <ion-input
+          type="email"
+          placeholder="Ej. carlos@tienda.com"
+          aria-label="Correo electrónico"
+          maxlength="120"
+          autocapitalize="off"
+          [value]="correo()"
+          (ionInput)="correo.set($any($event).detail.value ?? '')"
+        ></ion-input>
+      </div>
+
+      <label class="etiqueta-campo">
+        {{ id() === null ? 'Contraseña' : 'Contraseña (Nueva o actual)' }}
+      </label>
+      @if (id() !== null) {
+      <p class="ayuda">Déjala vacía para conservar la actual.</p>
+      }
+      <div class="campo-form">
+        <ion-input
+          type="password"
+          placeholder="••••••••"
+          aria-label="Contraseña"
+          maxlength="72"
+          [value]="contrasena()"
+          (ionInput)="contrasena.set($any($event).detail.value ?? '')"
+        ></ion-input>
+      </div>
+
+      <label class="etiqueta-campo">Teléfono / Celular</label>
+      <div class="campo-form">
+        <ion-input
+          type="tel"
+          placeholder="Ej. 3001234567"
+          aria-label="Teléfono o celular"
+          maxlength="16"
+          [value]="telefono()"
+          (ionInput)="telefono.set($any($event).detail.value ?? '')"
+        ></ion-input>
+      </div>
+
+      <label class="etiqueta-campo">Rol del Usuario</label>
+      <div class="campo-form">
+        <ion-select
+          interface="popover"
+          aria-label="Rol del usuario"
+          [value]="rol()"
+          [disabled]="esMiUsuario()"
+          (ionChange)="rol.set($any($event).detail.value)"
+        >
+          <ion-select-option value="administrador"
+            >Administrador</ion-select-option
+          >
+          <ion-select-option value="empleado">Empleado</ion-select-option>
+        </ion-select>
+      </div>
+      @if (esMiUsuario()) {
+      <p class="ayuda">No puedes cambiar tu propio rol.</p>
+      } @if (error()) {
+      <p class="mensaje-error" role="alert">{{ error() }}</p>
+      }
+
+      <ion-button
+        expand="block"
+        class="boton-guardar"
+        [class.verde]="id() === null"
+        [class.azul]="id() !== null"
+        [disabled]="guardando()"
+        (click)="guardar()"
+      >
+        @if (guardando()) {
+        <ion-spinner name="crescent"></ion-spinner>
+        } @else { {{ id() === null ? 'Registrar Usuario' : 'Guardar Cambios' }}
+        }
+      </ion-button>
+    </div>
+    }
+  </div>
+</ion-content>
