@@ -1,0 +1,76 @@
+// ============================================================
+// variables.scss
+// Colores y medidas de InventoryTech, tomados del mockup.
+// Si un color cambia, se cambia aquí y se actualiza en toda la app.
+// ============================================================
+
+// Repetimos :root tres veces para que estos valores ganen siempre
+// sobre los de la paleta oscura de Ionic (que trae un fondo casi negro).
+:root:root:root {
+  /* ---------- Colores propios de InventoryTech ---------- */
+  --it-fondo: #162947;          /* azul oscuro del fondo de todas las pantallas */
+  --it-tarjeta: #ffffff;        /* tarjetas blancas */
+  --it-burbuja: #1e3a5f;        /* burbujas del chat y zonas elevadas sobre el fondo */
+  --it-texto-claro: #ffffff;    /* texto sobre el fondo oscuro */
+  --it-texto-oscuro: #14213d;   /* títulos y texto dentro de las tarjetas */
+  --it-texto-suave: #64748b;    /* subtítulos y textos de ayuda */
+  --it-borde: #94a3b8;          /* borde gris de los campos */
+  --it-menta: #6ee7b7;          /* botón "Iniciar sesión" */
+  --it-verde: #059669;          /* botones "Guardar" y estado disponible */
+  --it-azul: #2563eb;           /* botones "Guardar cambios" y chat */
+  --it-naranja: #f59e0b;        /* "Agregar al Ticket", icono de salir y cambio */
+  --it-rojo: #dc2626;           /* "Eliminar" y stock bajo */
+  --it-dorado: #ca8a04;         /* botón "+" de las listas */
+  --it-turquesa: #14b8a6;       /* flecha de volver */
+
+  /* ---------- Esquinas redondeadas ---------- */
+  --it-radio-tarjeta: 20px;
+  --it-radio-campo: 14px;
+  --it-radio-boton: 14px;
+
+  /* ---------- Ajustes generales de Ionic ---------- */
+  --ion-font-family: 'Roboto', sans-serif;
+  --ion-background-color: var(--it-fondo);
+  --ion-background-color-rgb: 22, 41, 71;
+  --ion-text-color: var(--it-texto-claro);
+  --ion-text-color-rgb: 255, 255, 255;
+  --ion-toolbar-background: var(--it-fondo);
+  --ion-toolbar-color: var(--it-texto-claro);
+  --ion-item-background: transparent;
+
+  /* ---------- Colores de Ionic (azul, verde, naranja, rojo y menta) ---------- */
+  --ion-color-primary: #2563eb;
+  --ion-color-primary-rgb: 37, 99, 235;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #2157cf;
+  --ion-color-primary-tint: #3b73ed;
+
+  --ion-color-success: #059669;
+  --ion-color-success-rgb: 5, 150, 105;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #04845c;
+  --ion-color-success-tint: #1ea178;
+
+  --ion-color-warning: #f59e0b;
+  --ion-color-warning-rgb: 245, 158, 11;
+  --ion-color-warning-contrast: #14213d;
+  --ion-color-warning-contrast-rgb: 20, 33, 61;
+  --ion-color-warning-shade: #d88b0a;
+  --ion-color-warning-tint: #f6a823;
+
+  --ion-color-danger: #dc2626;
+  --ion-color-danger-rgb: 220, 38, 38;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #c22121;
+  --ion-color-danger-tint: #e03c3c;
+
+  --ion-color-tertiary: #6ee7b7;
+  --ion-color-tertiary-rgb: 110, 231, 183;
+  --ion-color-tertiary-contrast: #14213d;
+  --ion-color-tertiary-contrast-rgb: 20, 33, 61;
+  --ion-color-tertiary-shade: #61cba1;
+  --ion-color-tertiary-tint: #7de9be;
+}
