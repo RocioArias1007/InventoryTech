@@ -1,0 +1,107 @@
+<ion-content>
+  <div class="pagina-interna">
+    <app-cabecera-interna
+      titulo="Ventas por Período"
+      volverA="/admin"
+    ></app-cabecera-interna>
+
+    <div class="formulario">
+      <label class="etiqueta-campo">Producto</label>
+      <ion-select
+        class="campo-form selector"
+        interface="popover"
+        placeholder="Elige un producto"
+        [disabled]="cargandoProductos()"
+        [value]="producto()"
+        (ionChange)="producto.set($any($event).detail.value)"
+      >
+        @for (p of productos(); track p.id_producto) {
+        <ion-select-option [value]="p.id_producto"
+          >{{ p.nombre }}</ion-select-option
+        >
+        }
+      </ion-select>
+
+      <div class="dos-columnas">
+        <div>
+          <label class="etiqueta-campo">Desde</label>
+          <input
+            type="date"
+            class="campo-form campo-fecha"
+            [value]="desde()"
+            [max]="hoy"
+            (input)="desde.set($any($event.target).value)"
+          />
+        </div>
+        <div>
+          <label class="etiqueta-campo">Hasta</label>
+          <input
+            type="date"
+            class="campo-form campo-fecha"
+            [value]="hasta()"
+            [max]="hoy"
+            (input)="hasta.set($any($event.target).value)"
+          />
+        </div>
+      </div>
+
+      @if (error()) {
+      <p class="mensaje-error">{{ error() }}</p>
+      }
+
+      <ion-button
+        expand="block"
+        class="boton-guardar azul"
+        [disabled]="calculando()"
+        (click)="calcular()"
+      >
+        {{ calculando() ? 'Calculando...' : 'Calcular' }}
+      </ion-button>
+    </div>
+
+    @if (calculando()) {
+    <div class="cargando"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (resultado(); as r) {
+    <div class="resultado tarjeta">
+      <h3>{{ r.producto.nombre }}</h3>
+      <p class="rango">
+        {{ r.desde }} a {{ r.hasta }} ({{ r.dias }} {{ r.dias === 1 ? 'día' :
+        'días' }})
+      </p>
+
+      <div class="cifras">
+        <div class="cifra">
+          <span class="numero">{{ r.unidades_vendidas }}</span>
+          <span class="nombre">Unidades vendidas</span>
+        </div>
+        <div class="cifra destacada">
+          <span class="numero"
+            >{{ r.demanda_trapecio === null ? '-' : r.demanda_trapecio }}</span
+          >
+          <span class="nombre">Demanda (trapecio)</span>
+        </div>
+      </div>
+
+      @if (r.nota) {
+      <p class="nota">{{ r.nota }}</p>
+      }
+
+      <p class="explicacion">
+        <strong>Unidades vendidas</strong> es el conteo exacto.
+        <strong>Demanda</strong> promedia cada par de días seguidos y los suma,
+        así muestra la tendencia del período.
+      </p>
+
+      <div class="grafica">
+        @for (p of r.serie; track p.dia) {
+        <div class="columna">
+          <span class="valor">{{ p.unidades }}</span>
+          <div class="barra" [style.height]="altura(p.unidades)"></div>
+          <span class="dia">{{ etiquetaDia(p.dia) }}</span>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</ion-content>

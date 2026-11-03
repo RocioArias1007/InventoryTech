@@ -80,11 +80,30 @@ export class MovimientosPage {
     return t === 'ingreso' ? 'Ingreso' : t === 'venta' ? 'Venta' : 'Ajuste';
   }
 
-  imprimir() {
-    imprimir();
+    imprimir() {
+    const d = this.datos();
+    if (!d) return;
+    const ingresos = d.movimientos.filter((m) => m.tipo === 'ingreso').length;
+    const ventas = d.movimientos.filter((m) => m.tipo === 'venta').length;
+    const filtro = this.tipos.find((t) => t.valor === this.tipo())?.texto ?? 'Todos';
+
+    imprimir({
+      titulo: 'Movimientos de inventario',
+      subtitulo: `Del ${d.desde} al ${d.hasta} (${filtro})`,
+      columnas: ['Fecha', 'Producto', 'Tipo', 'Cantidad', 'Stock anterior', 'Stock nuevo', 'Usuario'],
+      filas: d.movimientos.map((m) => [
+        fechaHora(m.fecha), m.producto, this.nombreTipo(m.tipo), m.cantidad,
+        m.stock_anterior, m.stock_nuevo, m.usuario,
+      ]),
+      resumen: [
+        { etiqueta: 'Movimientos', valor: d.movimientos.length },
+        { etiqueta: 'Ingresos', valor: ingresos },
+        { etiqueta: 'Ventas', valor: ventas },
+      ],
+    });
   }
 
-  exportar() {
+    exportar() {
     const d = this.datos();
     if (!d) return;
     descargarCsv(

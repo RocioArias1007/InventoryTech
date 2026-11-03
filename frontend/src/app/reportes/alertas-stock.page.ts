@@ -44,11 +44,30 @@ export class AlertasStockPage {
     });
   }
 
-  imprimir() {
-    imprimir();
+    imprimir() {
+    const d = this.datos();
+    if (!d) return;
+    const agotados = d.productos.filter((p) => p.estado === 'agotado').length;
+
+    imprimir({
+      titulo: 'Alertas de stock',
+      subtitulo: `Productos con poco inventario al ${new Date().toLocaleDateString('es-CO')}`,
+      columnas: ['Producto', 'Categoría', 'Cantidad', 'Stock mínimo', 'Estado'],
+      filas: d.productos.map((p) => [
+        p.nombre,
+        p.categoria,
+        p.cantidad,
+        p.stock_minimo,
+        p.estado === 'agotado' ? 'Agotado' : 'Stock bajo',
+      ]),
+      resumen: [
+        { etiqueta: 'Productos en alerta', valor: d.productos.length },
+        { etiqueta: 'Agotados', valor: agotados },
+      ],
+    });
   }
 
-  exportar() {
+    exportar() {
     const d = this.datos();
     if (!d) return;
     const hoy = new Date().toISOString().slice(0, 10);

@@ -27,12 +27,12 @@ import { arrowUndo } from 'ionicons/icons';
   `,
   styles: [`
     .cabecera {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-height: 56px;
-      padding-top: 6px;
-    }
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding-top: calc(6px + env(safe-area-inset-top, 0px));
+}
 
     .volver {
       display: flex;

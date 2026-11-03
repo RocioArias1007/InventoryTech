@@ -52,10 +52,25 @@ export class CorteCajaPage {
   }
 
   imprimir() {
-    imprimir();
+    const d = this.datos();
+    if (!d) return;
+    const totalVendido = d.ventas.reduce((suma, v) => suma + v.total, 0);
+    const unidades = d.ventas.reduce((suma, v) => suma + v.unidades, 0);
+
+    imprimir({
+      titulo: 'Corte de caja',
+      subtitulo: `Ventas del ${d.desde}`,
+      columnas: ['Venta', 'Hora', 'Vendedor', 'Unidades', 'Total'],
+      filas: d.ventas.map((v) => [v.id_venta, this.hora(v.fecha_venta), v.vendedor, v.unidades, this.pesos(v.total)]),
+      resumen: [
+        { etiqueta: 'Ventas realizadas', valor: d.ventas.length },
+        { etiqueta: 'Unidades vendidas', valor: unidades },
+        { etiqueta: 'Total en caja', valor: this.pesos(totalVendido) },
+      ],
+    });
   }
 
-  exportar() {
+    exportar() {
     const d = this.datos();
     if (!d) return;
     descargarCsv(

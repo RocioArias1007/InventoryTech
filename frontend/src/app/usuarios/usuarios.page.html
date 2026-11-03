@@ -1,0 +1,75 @@
+<ion-content>
+  <div class="pagina-interna">
+    <app-cabecera-interna titulo="Gestión de Usuarios" volverA="/admin">
+      <button
+        accion
+        type="button"
+        class="mas"
+        (click)="nuevo()"
+        aria-label="Registrar usuario"
+      >
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </button>
+    </app-cabecera-interna>
+
+    <!-- Buscador -->
+    <div class="buscador">
+      <ion-icon name="search"></ion-icon>
+      <ion-input
+        type="text"
+        placeholder="Buscar por nombre o correo..."
+        aria-label="Buscar usuario"
+        autocomplete="off"
+        (ionInput)="alEscribir($event)"
+      ></ion-input>
+    </div>
+
+    <!-- Lista -->
+    @if (cargando()) {
+    <div class="cargando"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (errorCarga()) {
+    <p class="aviso-error">
+      {{ errorCarga() }}
+      <button type="button" (click)="cargar()">Reintentar</button>
+    </p>
+    } @else if (lista().length === 0) {
+    <p class="vacio">No se encontraron usuarios.</p>
+    } @else {
+    <section class="lista">
+      @for (u of lista(); track u.id_usuario) {
+      <article class="tarjeta usuario">
+        <div class="fila">
+          <div
+            class="icono-caja"
+            [class.tono-admin]="u.rol === 'administrador'"
+            [class.tono-empleado]="u.rol === 'empleado'"
+          >
+            <ion-icon name="person"></ion-icon>
+          </div>
+          <div class="info">
+            <h3>{{ u.nombre }} {{ u.apellidos }}</h3>
+            <p>{{ u.correo || u.usuario }}</p>
+          </div>
+          <span
+            class="etiqueta-rol"
+            [class.tono-admin]="u.rol === 'administrador'"
+            [class.tono-empleado]="u.rol === 'empleado'"
+          >
+            {{ u.rol === 'administrador' ? 'ADMIN' : 'EMPLEADO' }}
+          </span>
+        </div>
+
+        <div class="acciones">
+          <button type="button" class="accion azul" (click)="editar(u)">
+            <ion-icon name="create"></ion-icon> Actualizar
+          </button>
+          <button type="button" class="accion roja" (click)="eliminar(u)">
+            <ion-icon name="trash"></ion-icon> Eliminar
+          </button>
+        </div>
+      </article>
+      }
+    </section>
+    }
+  </div>
+</ion-content>

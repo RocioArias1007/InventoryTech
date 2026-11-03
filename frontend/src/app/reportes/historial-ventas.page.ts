@@ -61,11 +61,26 @@ export class HistorialVentasPage {
     });
   }
 
-  imprimir() {
-    imprimir();
+    imprimir() {
+    const d = this.datos();
+    if (!d) return;
+    const totalVendido = d.ventas.reduce((suma, v) => suma + v.total, 0);
+    const unidades = d.ventas.reduce((suma, v) => suma + v.unidades, 0);
+
+    imprimir({
+      titulo: 'Historial de ventas',
+      subtitulo: `Del ${d.desde} al ${d.hasta}`,
+      columnas: ['Venta', 'Fecha', 'Vendedor', 'Unidades', 'Total'],
+      filas: d.ventas.map((v) => [v.id_venta, fechaHora(v.fecha_venta), v.vendedor, v.unidades, this.pesos(v.total)]),
+      resumen: [
+        { etiqueta: 'Ventas realizadas', valor: d.ventas.length },
+        { etiqueta: 'Unidades vendidas', valor: unidades },
+        { etiqueta: 'Total vendido', valor: this.pesos(totalVendido) },
+      ],
+    });
   }
 
-  exportar() {
+    exportar() {
     const d = this.datos();
     if (!d) return;
     descargarCsv(

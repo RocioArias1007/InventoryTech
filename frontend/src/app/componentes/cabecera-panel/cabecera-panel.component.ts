@@ -23,11 +23,11 @@ import { SesionService } from '../../servicios/sesion.service';
   `,
   styles: [`
     .cabecera {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 10px;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: calc(10px + env(safe-area-inset-top, 0px));
+}
 
     .logo {
       width: 88px;

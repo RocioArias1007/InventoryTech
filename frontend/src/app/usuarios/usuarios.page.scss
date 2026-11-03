@@ -1,0 +1,119 @@
+// Botón "+" dorado del encabezado.
+.mas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: 0;
+  color: var(--it-dorado);
+  cursor: pointer;
+
+  ion-icon { font-size: 32px; }
+}
+
+// Buscador: caja blanca redondeada con lupa.
+.buscador {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  margin: 8px 0 16px;
+  padding: 0 14px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+
+  ion-icon { flex-shrink: 0; font-size: 20px; color: var(--it-texto-suave); }
+
+  ion-input {
+    flex: 1;
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --background: transparent;
+    --color: var(--it-texto-oscuro);
+    --placeholder-color: var(--it-texto-suave);
+    --placeholder-opacity: 1;
+    min-height: 0;
+    font-size: 15px;
+  }
+}
+
+.lista { display: flex; flex-direction: column; gap: 12px; }
+
+.usuario { padding: 14px 14px 6px; }
+
+.fila { display: flex; align-items: center; gap: 12px; }
+
+// Cajita del icono: naranja para administrador, azul para empleado.
+.icono-caja {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+
+  ion-icon { font-size: 24px; }
+  &.tono-admin { background: #fef3c7; color: #f59e0b; }
+  &.tono-empleado { background: #e8f0fe; color: var(--it-azul); }
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+
+  h3 { margin: 0 0 2px; font-size: 16px; font-weight: 700; color: var(--it-texto-oscuro); }
+
+  p {
+    margin: 0;
+    overflow: hidden;
+    font-size: 12.5px;
+    color: var(--it-texto-suave);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// Etiqueta "ADMIN" / "EMPLEADO".
+.etiqueta-rol {
+  flex-shrink: 0;
+  padding: 4px 9px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+
+  &.tono-admin { background: #fef3c7; color: #b45309; }
+  &.tono-empleado { background: #e8f0fe; color: var(--it-azul); }
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.accion {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 40px;
+  padding: 0 8px;
+  background: none;
+  border: 0;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+
+  ion-icon { font-size: 16px; }
+  &.azul { color: var(--it-azul); }
+  &.roja { color: var(--it-rojo); }
+}

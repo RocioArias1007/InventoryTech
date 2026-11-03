@@ -64,11 +64,36 @@ export class RentabilidadPage {
     return valor === null ? '-' : `${valor}%`;
   }
 
-  imprimir() {
-    imprimir();
+    imprimir() {
+    const d = this.datos();
+    if (!d) return;
+    const vendido = d.productos.reduce((suma, p) => suma + p.ingresos, 0);
+    const costo = d.productos.reduce((suma, p) => suma + p.costo, 0);
+    const ganancia = d.productos.reduce((suma, p) => suma + p.ganancia, 0);
+
+    imprimir({
+      titulo: 'Rentabilidad',
+      subtitulo: `Del ${d.desde} al ${d.hasta}`,
+      columnas: ['Producto', 'Unidades', 'Vendido', 'IVA', 'Vendido sin IVA', 'Costo', 'Ganancia', 'Margen'],
+      filas: d.productos.map((p) => [
+        p.nombre,
+        p.unidades,
+        this.pesos(p.ingresos),
+        this.pesos(p.iva),
+        this.pesos(p.ingresos_sin_iva),
+        this.pesos(p.costo),
+        this.pesos(p.ganancia),
+        this.margen(p.margen_porcentaje),
+      ]),
+      resumen: [
+        { etiqueta: 'Total vendido', valor: this.pesos(vendido) },
+        { etiqueta: 'Costo total', valor: this.pesos(costo) },
+        { etiqueta: 'Ganancia total', valor: this.pesos(ganancia) },
+      ],
+    });
   }
 
-  exportar() {
+    exportar() {
     const d = this.datos();
     if (!d) return;
     descargarCsv(
