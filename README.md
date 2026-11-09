@@ -1,120 +1,159 @@
 # InventoryTech
 
-Plataforma híbrida de inventario para tiendas de barrio. Permite organizar productos, controlar el stock, registrar ventas y consultar reportes, con un asistente conversacional (Katia) que responde preguntas sobre los datos del negocio.
+Aplicación híbrida de inventario y ventas para tiendas de barrio. Permite controlar productos, existencias, ventas y reportes desde el celular o desde el navegador, y consultar los datos en lenguaje natural con un asistente de inteligencia artificial llamado Katia.
 
-Proyecto integrador de Ingeniería de Software, desarrollado por Rocio Arias.
+Proyecto del curso **Desarrollo Híbrido**, Ingeniería de Software, Universidad de Cundinamarca, extensión Soacha.
 
-## Qué resuelve
+- **Autora:** Nidia Rocio Arias Cruz
 
-Muchas microempresas del barrio Alicante llevan su inventario en Excel o a mano, con errores humanos y sin información al día. InventoryTech ofrece una herramienta simple, enfocada en lo básico y con baja curva de aprendizaje.
+## Enlaces
+
+| Recurso | Dirección |
+|---|---|
+| Aplicación web | https://inventorytech-web.onrender.com |
+| API (backend) | https://inventorytech-xyuy.onrender.com/api |
+
+> Nota: el servidor y la base de datos usan planes gratuitos. Si la aplicación lleva un rato sin usarse, la primera respuesta puede tardar hasta un minuto mientras el servidor despierta. Después funciona con normalidad.
+
+## Usuarios de prueba
+
+Estos usuarios existen solo para la revisión del proyecto.
+
+| Rol | Usuario | Contraseña |
+|---|---|---|
+| Administrador | admin | Admin2026 |
+| Empleado | empleado2 | Empleado2026 |
 
 ## Funcionalidades
 
-- Inicio de sesión con dos roles: administrador y empleado.
-- Gestión de categorías, productos (con foto) y usuarios.
-- Ingreso de mercancía que suma solo al inventario, guardando el costo de cada ingreso.
-- Registro de ventas con una regla central: el stock nunca queda negativo y no se puede vender más de lo disponible.
-- Ventas por período con unidades vendidas y demanda calculada con la regla del trapecio.
-- Centro de reportes: movimientos de inventario, historial de ventas, corte y cierre de caja del día, alertas de stock bajo y rentabilidad, con opción de imprimir y exportar a CSV.
-- Historial y auditoría de cambios (quién modificó qué, con el antes y el después).
-- Katia, el chatbot con IA generativa (Google Gemini): responde sobre existencias, precios, ventas, productos más vendidos, demanda y costos. Lo que puede responder depende del rol.
-- Seguridad: contraseñas cifradas, sesiones con token, permisos por rol y límite de intentos de inicio de sesión.
+**Administrador**
+- Gestión de productos (con foto opcional), categorías y empleados.
+- Ingreso de mercancía con actualización opcional del precio de compra.
+- Reportes de corte de caja, historial de ventas, movimientos de inventario, rentabilidad, alertas de stock y demanda por período, con exportación a PDF y Excel.
+- Historial de auditoría de los cambios realizados.
+- Consultas al asistente Katia.
 
-## Roles
+**Empleado**
+- Registro de ventas con cálculo de IVA y cambio, y ticket en PDF.
+- Consulta de existencias.
+- Consultas al asistente Katia.
 
-| Rol | Puede hacer |
-|---|---|
-| Administrador | Todo: usuarios, categorías, productos, ventas, reportes y Katia completa |
-| Empleado | Registrar ventas, consultar stock y preguntarle a Katia por existencias y precios de venta |
+**Reglas importantes del sistema**
+- No se puede vender más de lo que hay en stock; la venta se rechaza con un mensaje que indica los faltantes.
+- Cada venta e ingreso de mercancía se guarda en una transacción: se completa por entero o no se ejecuta.
+- Un empleado desactivado pierde el acceso de inmediato, aunque conserve una sesión abierta.
 
 ## Tecnologías
 
-| Parte | Tecnología |
+| Capa | Tecnología |
 |---|---|
-| Frontend | Ionic con Angular y Capacitor |
-| Backend | Node.js con Express |
-| Base de datos | MySQL (en la nube con Aiven) |
-| Chatbot | Google Gemini |
-| Pruebas | Postman |
-
-## Arquitectura
-
-```
-App Ionic  --API REST (JSON, token JWT)-->  Backend Node/Express  --SQL con SSL-->  MySQL (Aiven)
-                                                    |
-                                                    +--HTTPS-->  Google Gemini
-```
-
-Katia nunca accede directamente a la base de datos: Gemini solo pide consultas predefinidas y seguras, que el backend ejecuta según el rol de la persona.
+| Frontend | Ionic con Angular (standalone) y Capacitor (Android y web) |
+| Backend | Node.js con Express (API REST) |
+| Base de datos | MySQL 8, alojada en Aiven, diseñada con MySQL Workbench |
+| Seguridad | JSON Web Tokens (JWT) y contraseñas con hash bcrypt |
+| Asistente | Google Gemini |
+| Reportes | jsPDF (PDF) y write-excel-file (Excel) |
+| Despliegue | Render (servidor y sitio web) |
+| Pruebas | Postman y Newman |
 
 ## Estructura del repositorio
 
 ```
 InventoryTech/
-  backend/    API REST (Node.js y Express)
-  frontend/   App Ionic (Angular y Capacitor)
-  pruebas/    Colección de Postman
+  backend/      Servidor Node.js y Express (API REST)
+  frontend/     Aplicación Ionic, Angular y Capacitor
+  pruebas/      Colección de Postman y evidencias de las pruebas
+  esquema.sql   Estructura de la base de datos (sin datos)
+  README.md
 ```
 
-## Requisitos
+## Cómo ejecutarlo en local
 
-- Node.js 20 o superior
-- Ionic CLI (`npm install -g @ionic/cli`)
-- Una base de datos MySQL 8 con el esquema de InventoryTech
-- Una clave de la API de Google Gemini (opcional, solo para Katia)
+### Requisitos
+- Node.js 22 o superior y npm.
+- Acceso a una base de datos MySQL 8 (local o en la nube).
+- Para la app Android: Android Studio.
 
-## Cómo correr el backend
+### 1. Base de datos
+1. Crea una base de datos vacía en MySQL.
+2. Ejecuta el contenido de `esquema.sql` para crear las tablas.
+3. Crea al menos un usuario administrador. Las contraseñas se guardan con bcrypt, así que no se pueden insertar en texto plano.
 
-1. Entra a la carpeta `backend` e instala las dependencias:
-   ```
-   npm install
-   ```
-2. Crea un archivo `.env` con estas variables:
+### 2. Backend
+```bash
+cd backend
+npm install
+npm start
+```
+El servidor queda disponible en `http://localhost:` seguido del puerto que configures en `PUERTO`, con la API en la ruta `/api`.
 
-   | Variable | Para qué sirve |
-   |---|---|
-   | `PUERTO` | Puerto del servidor (por ejemplo 3000) |
-   | `DB_HOST` | Dirección del servidor MySQL |
-   | `DB_PUERTO` | Puerto de MySQL |
-   | `DB_USUARIO` | Usuario de la base de datos |
-   | `DB_CLAVE` | Contraseña de ese usuario |
-   | `DB_NOMBRE` | Nombre de la base (`inventorytech`) |
-   | `DB_SSL_CA` | Ruta del certificado SSL (si la base está en la nube) |
-   | `JWT_SECRET` | Texto secreto para firmar los tokens |
-   | `ORIGENES_PERMITIDOS` | Direcciones del frontend permitidas (por ejemplo `http://localhost:8100`) |
-   | `GEMINI_API_KEY` | Clave de la API de Gemini |
-   | `GEMINI_MODEL` | Modelo de Gemini a usar |
-   | `GEMINI_PENSAMIENTO` | Nivel de razonamiento (`low` recomendado) |
+### 3. Frontend
+```bash
+cd frontend
+npm install
+ionic serve
+```
+Antes de iniciar, revisa que `API_URL` en `frontend/src/app/configuracion.ts` apunte al backend que quieres usar.
 
-3. Enciende el servidor:
-   ```
-   node src/servidor.js
-   ```
-   Debe mostrar que la conexión a MySQL fue exitosa.
+### 4. Aplicación Android
+```bash
+cd frontend
+ionic build
+npx cap sync
+npx cap open android
+```
+Desde Android Studio se ejecuta en un dispositivo o emulador, o se genera el APK con **Build > Build Bundle(s) / APK(s) > Build APK(s)**.
 
-## Cómo correr el frontend
+## Variables de entorno (backend)
 
-1. Entra a la carpeta `frontend` e instala las dependencias:
-   ```
-   npm install
-   ```
-2. Revisa que `src/app/configuracion.ts` apunte al backend (`http://localhost:3000/api`).
-3. Enciende la app:
-   ```
-   ionic serve
-   ```
-   Se abre en `http://localhost:8100`.
+Este repositorio **no incluye ningún archivo de ejemplo** de variables de entorno (por ejemplo `.env.example`), porque los valores reales son secretos y no deben publicarse. Para ejecutar el backend hay que crear manualmente un archivo `.env` dentro de la carpeta `backend`, con las variables de la tabla siguiente. En Render se configuran en la sección **Environment** del servicio.
+
+| Variable | Qué es |
+|---|---|
+| `PUERTO` | Puerto en el que escucha el servidor (en Render, 10000). |
+| `DB_HOST` | Dirección del servidor MySQL. |
+| `DB_PORT` | Puerto del servidor MySQL. |
+| `DB_USER` | Usuario de la base de datos. |
+| `DB_PASSWORD` | Contraseña del usuario de la base de datos. |
+| `DB_NAME` | Nombre de la base de datos. |
+| `DB_SSL_CA` | Ruta del certificado de la autoridad certificadora para la conexión cifrada con Aiven. |
+| `JWT_SECRET` | Clave larga y aleatoria para firmar los tokens de sesión. Debe ser distinta en cada entorno. |
+| `ORIGENES_PERMITIDOS` | Direcciones desde las que se permite llamar a la API (CORS), separadas por coma y sin barra final. Incluye la dirección del sitio web y `https://localhost` para la app Android. |
+| `GEMINI_API_KEY` | Clave de acceso al servicio de Google Gemini. Solo existe en el servidor. |
+
+## Seguridad
+
+- Las contraseñas se almacenan con bcrypt, nunca en texto plano.
+- La sesión usa un JWT con vigencia de 8 horas; el servidor verifica en la base de datos que el usuario siga activo en cada petición.
+- El acceso a cada función depende del rol (administrador o empleado).
+- Todas las consultas a la base de datos usan parámetros, lo que previene la inyección SQL.
+- El inicio de sesión tiene límite de intentos fallidos por usuario y por dirección.
+- CORS solo acepta las direcciones listadas en `ORIGENES_PERMITIDOS`.
+- La clave de Gemini nunca llega al frontend, y Katia solo ejecuta consultas de lectura.
+- No se publican en el repositorio: archivos `.env`, certificados, respaldos de la base de datos ni entornos locales de Postman.
 
 ## Pruebas
 
-La carpeta `pruebas` contiene la colección de Postman con 76 peticiones y 175 verificaciones automáticas. Cubren autenticación, roles y permisos, validación de datos, reglas de negocio (stock), usuarios, reportes, demanda y seguridad de Katia. Para usarla: importar el archivo en Postman, llenar las variables de la colección y ejecutarla con Collection Runner.
+La carpeta `pruebas/` contiene la colección de Postman con **76 solicitudes y 175 verificaciones automáticas**, todas aprobadas. Cubren inicio de sesión, roles (401 y 403), CRUD de productos y categorías, ventas con control de stock y reportes.
+
+Para ejecutarla desde la terminal con Newman:
+
+```bash
+npm install -g newman
+newman run pruebas/coleccion.json -e pruebas/entorno.json
+```
+
+El archivo de entorno con valores reales no se publica; hay que crearlo en Postman con la variable de la dirección base de la API y exportarlo.
+
+Además, se midió el efecto del índice `idx_venta_fecha` con `EXPLAIN ANALYZE` sobre 100.000 ventas: la consulta por rango de fechas pasó de 57,8 ms a 4,11 ms (unas 14 veces más rápida).
 
 ## Limitaciones conocidas
 
-- La base de datos usa el plan gratuito de Aiven, que puede apagarse tras un tiempo sin uso.
-- El backend corre en el computador del desarrollador; para usar la app desde un celular, ambos deben estar en la misma red.
-- Katia depende de la disponibilidad de la API de Gemini y puede tardar unos segundos en responder.
+- Las alertas de stock bajo se muestran al abrir la pantalla de alertas; no se envían notificaciones fuera de la aplicación.
+- Los listados usan un límite de filas, no paginación por páginas.
+- El contador de intentos de inicio de sesión vive en la memoria del servidor y se reinicia cuando este se reinicia.
+- La versión para iOS no se ha compilado.
 
-## Autoría
+## Licencia
 
-Rocio Arias — Estudiante de Ingeniería de Software, Universidad de Cundinamarca.
+Proyecto académico. Todos los derechos reservados por la autora.
